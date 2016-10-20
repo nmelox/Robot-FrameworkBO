@@ -1,0 +1,531 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          Variables.txt
+
+*** Test Cases ***
+BO - X: Login - Usuario Corazon
+    [Tags]    BO - X
+    Open Browser    ${URL}    ${BROWSER}
+    Maximize Browser Window
+    Input text    //input[@name='_username']    nahuel.melo@vrainz.com
+    Input text    //input[@name='_password']    corazon
+    Click element    //button[contains(.,'Ingresar')]
+    Sleep    5
+    Wait until element is visible    //a[contains(.,'Vrainz Backoffice')]
+    Wait Until Element is Visible    ${CORAZONSANO}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    //a[contains(.,'Acciones')]
+    Wait Until Element is Visible    //a[contains(.,'Precio cigarrillos')]
+    Wait Until Element is Visible    //a[contains(.,'Terminos y condiciones')]
+    Capture Page Screenshot    Bo_Usuario Corazon_Validar Permisos${CORRIDA}
+    Close Browser
+
+BO - 1: Login Page
+    [Tags]    BO -1
+    Open Browser    ${URL}    ${BROWSER}
+    Maximize Browser Window
+    Wait Until Element Is Visible    //input[@name='_username']
+
+BO - 1.1: Login Page - Campos
+    [Tags]    BO -1
+    Wait Until Element Is Visible    //input[@name='_username']
+    Wait until element is Visible    //input[@name='_password']
+    Wait Until element is Visible    //input[@name='_remember_me']
+    Wait Until element is Visible    //button[contains(.,'Ingresar')]
+    Capture Page Screenshot    BO_1.1_LoginPAge_Campos${CORRIDA}.jpg
+
+BO - 1.2: Login - No completo Datos
+    Click element    //button[contains(.,'Ingresar')]
+    Wait Until Element is Visible    //div[contains(.,' Verifique sus datos de acceso')]
+    Capture Page Screenshot    BO_1-2_Login_NoCompletoDatos${CORRIDA} .jpg
+
+BO - 2: Login - Completo con usuario invalido
+    Reload page
+    Input text    //input[@name='_username']    test@test.com
+    Input text    //input[@name='_password']    123456
+    Click element    //button[contains(.,'Ingresar')]
+    Wait until element is visible    //div[contains(.,' Verifique sus datos de acceso')]
+    Capture Page Screenshot    BO_2_Login_UsuarioInvalido${CORRIDA} .jpg
+
+BO - 3: Login - Completo con password invalida
+    Reload page
+    Input text    //input[@name='_username']    admin@vrainz.com
+    Input text    //input[@name='_password']    test
+    Click element    //button[contains(.,'Ingresar')]
+    Wait until element is visible    //div[contains(.,' Verifique sus datos de acceso')]
+
+BO - 4: Login - Datos validos
+    Reload page
+    Input text    //input[@name='_username']    admin@vrainz.com
+    Input text    //input[@name='_password']    123456
+    Click element    //button[contains(.,'Ingresar')]
+    Sleep    5
+    Wait until element is visible    //a[contains(.,'Vrainz Backoffice')]
+
+BO - 5: Home Page - Campos
+    Wait Until Element is Visible    ${SOYMAMA}
+    Wait Until Element is Visible    ${CORAZONSANO}
+    Wait Until Element is Visible    //a[contains(.,' Home')]
+    Capture Page Screenshot    BO_5_HomePage_Campos${CORRIDA}.jpg
+
+BO - 6: Home Page - Corazon Sano - Secciones
+    Wait Until Element is Visible    ${CORAZONSANO}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Wait Until Element is Visible    ${SEECCIONPRECIO}
+    Wait Until Element is Visible    ${SECCIONTERMINO}
+    Capture Page Screenshot    BO_6_CorazonSano_Secciones${CORRIDA}.jpg
+
+BO - 7: Home Page - Soy Mama - Secciones
+    Wait Until Element is Visible    ${SOYMAMA}
+    Click element    ${SOYMAMA}
+    Wait Until Element is Visible    ${SECCIONCONTENIDO}
+    Capture Page Screenshot    BO_7_SoyMama_Secciones${CORRIDA}.jpg
+
+BO - 8: Home Page - Operadoras (Telcos) - Secciones
+    Wait Until Element is Visible    ${HOME}
+    Click element    ${HOME}
+    Wait Until Element is Visible    //a[@href='/telco']
+    Capture Page Screenshot    BO_8_Telcos_Secciones${CORRIDA}.jpg
+
+BO - 9: Telco_Operadoras - Validar Pantalla
+    Wait Until Element is Visible    ${HOME}
+    Click element    ${HOME}
+    Click element    //a[@href='/telco']
+    Wait Until Element is Visible    //h1[contains(.,'Operadoras (Telcos)')]
+    Wait Until Element is Visible    //a[@href='/telco/new']
+    Capture Page Screenshot    BO_9_Operadores-Telco_Validar Pantalla${CORRIDA}.jpg
+
+BO - 10: Telco_Operadoras - Crear Telco - Campos
+    Wait Until Element is Visible    ${NEWTELCO}
+    Click Element    ${NEWTELCO}
+    Wait Until Element is Visible    ${NAMETELCO}
+    Wait Until Element is Visible    ${NAMETELCO}
+    Wait Until Element is Visible    ${BOTONGUARDAR}
+    Wait Until Element is Visible    //a[contains(.,'Cancelar')]
+    Capture Page Screenshot    BO_10_Operadores-Telco_Crear - Campos${CORRIDA}.jpg
+
+BO - 11: Telco_Operadoras - Crear Telco - Solo País
+    Click Element    ${HOME}
+    Wait Until Element is Visible    //a[@href='/telco']
+    Click Element    //a[@href='/telco']
+    Wait Until Element is Visible    ${NEWTELCO}
+    Click Element    ${NEWTELCO}
+    Wait Until Element is Visible    ${NAMETELCO}
+    Input Text    ${NAMETELCO}    Telco Test1
+    Click Element    ${BOTONGUARDAR}
+    Capture Page Screenshot    BO_11_Operadores-Telco_Crear Telco - Solo País${CORRIDA}.jpg
+
+BO - 12: Telco_Operadoras - Crear Telco - Solo Codigo
+    Click Element    ${HOME}
+    Wait Until Element is Visible    //a[@href='/telco']
+    Click Element    //a[@href='/telco']
+    Wait Until Element is Visible    ${NEWTELCO}
+    Click Element    ${NEWTELCO}
+    Wait Until Element is Visible    //input[@name='code']
+    Input Text    //input[@name='code']    Telco Test1
+    Click Element    ${BOTONGUARDAR}
+    Capture Page Screenshot    BO_12_Operadores-Telco_Crear Telco - Solo Codigo${CORRIDA}.jpg
+
+BO - 13: Telco_Operadoras - Crear Telco - Cancelar
+    Wait Until Element is Visible    ${HOME}
+    Click element    ${HOME}
+    Click element    //a[@href='/telco']
+    Comment    Wait Until Element is Visible    //h[contains(.,'Operadoras (Telcos)')]
+    Wait Until Element is Visible    ${NEWTELCO}
+    Click Element    ${NEWTELCO}
+    Wait Until Element is Visible    ${NAMETELCO}
+    Input Text    ${NAMETELCO}    Telco Test2
+    Input Text    //input[@name='code']    qa.Telco2
+    Click Element    //a[contains(.,'Cancelar')]
+    Wait Until Element is Visible    //h1[contains(.,'Operadoras (Telcos)')]
+    Capture Page Screenshot    BO_13_Operadores-Telco_Crear Telco - Cancelar${CORRIDA}.jpg
+
+BO - 14: Telco_Operadoras- Crear Telco
+    Wait Until Element is Visible    ${NEWTELCO}
+    Click Element    ${NEWTELCO}
+    Wait Until Element is Visible    ${NAMETELCO}
+    Input Text    ${NAMETELCO}    Telco Test
+    Input Text    //input[@name='code']    qa.Telco
+    Click Element    ${BOTONGUARDAR}
+    Wait Until Element is Visible    //h1[contains(.,'Operadoras (Telcos)')]
+    Capture Page Screenshot    BO_14_Operadores-Telco_Crear Telco${CORRIDA}.jpg
+
+BO - 15: Telco_Operadoras- Crear Telco ya existente
+    Wait Until Element is Visible    ${NEWTELCO}
+    Click Element    ${NEWTELCO}
+    Wait Until Element is Visible    ${NAMETELCO}
+    Input Text    ${NAMETELCO}    Telco Test
+    Input Text    //input[@name='code']    qa.Telco
+    Click Element    ${BOTONGUARDAR}
+    Wait Until Element is Visible    //div[contains(.,'Error creando operadora.')]
+    Capture Page Screenshot    BO_15_Operadores-Telco_Crear Telco ya existente${CORRIDA}.jpg
+
+BO - 29: Corazon Sano - Acciones
+    Wait Until Element is Visible    ${CORAZONSANO}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Sleep    5
+    Wait Until Element is Visible    //button[contains(.,'Buscar')]
+    Wait Until Element is Visible    //a[contains(.,'Anterior')]
+    Wait Until Element is Visible    //a[contains(.,'Siguiente')]
+    Page Should Contain Element    ${BUSQUEDAXTITULO}
+    Wait Until Element is Visible    ${BUSQUEDAXTELCO}
+    Wait Until Element is Visible    ${BUSQUEDAXFEATURE}
+    Capture Page Screenshot    BO_29_CorazonSano_Acciones${CORRIDA}.jpg
+
+BO - 32: Corazon Sano - Acciones - Crear - Validar Campos
+    Wait Until Element is Visible    ${CORAZONSANO}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Click Element    //a[contains(.,'Crear')]
+    Wait Until Element is Visible    //div[contains(.,'Nueva Accion')]
+    Page Should Contain Element    //Select[@id='feature']
+    Page Should Contain Element    //Select[@class='form-control telcos-input']
+    Comment    Page Should Contain Element    //div[@label='Telco / País']
+    Page Should Contain Element    //Input[@placeholder='Titulo del articulo']
+    Page Should Contain Element    //Input[@placeholder='Texto de copyright']
+    Page Should Contain Element    //Input[@type='file']
+    Page Should Contain Element    //button[contains(.,'+ sección')]
+    Page Should Contain Element    ${BOTONGUARDAR}
+    Page Should Contain Element    //button[contains(.,'Guardar y Nuevo')]
+    Page Should Contain Element    //a[contains(.,'Cancelar')]
+    Capture Page Screenshot    BO_32_CorazonSano_Validar Campos${CORRIDA}.jpg
+
+BO - 32.1: Corazon Sano - Acciones - Crear - Validar Idiomas
+    Wait Until Element is Visible    //a[contains(.,'Español Argentino')]
+    Page Should Contain Element    //a[contains(.,'Español Argentino')]
+    Page Should Contain Element    //a[contains(.,'Español Neutro')]
+    Click Element    //a[contains(.,'Español Neutro')]
+    Page Should Contain Element    //a[contains(.,'Portugués')]
+    Click Element    //a[contains(.,'Portugués')]
+    Page Should Contain Element    //a[contains(.,'Ingles')]
+    Click Element    //a[contains(.,'Ingles')]
+    Capture Page Screenshot    BO_32.1_CorazonSano_Idiomas${CORRIDA}.jpg
+
+BO - 33: Corazon Sano - Acciones - Crear - Solo Feature
+    Wait Until Element is Visible    ${HOME}
+    Click element    ${HOME}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Wait Until Element is Visible    ${BOTONCREAR}
+    Click Element    ${BOTONCREAR}
+    Click Element    //a[contains(.,'Español Argentino')]
+    Select From List    //Select[@id='feature']    ${FEATURE}
+    Comment    sleep    5
+    Click Element    ${BOTONGUARDAR}
+    Wait until Element is Visible    //div[contains(.,'Al menos una pestaña de idioma debe ser completada (telcos, titulo e imagen principal)')]
+    Capture Page Screenshot    BO_33_CorazonSano_Crear Accion_Solo Feature${CORRIDA}.jpg
+
+BO - 34: Corazon Sano - Acciones - Crear - Solo Idioma
+    Wait Until Element is Visible    ${HOME}
+    Click element    ${HOME}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Wait Until Element is Visible    ${BOTONCREAR}
+    Click Element    ${BOTONCREAR}
+    Click Element    //a[contains(.,'Español Argentino')]
+    Select From List    //Select[@class='form-control telcos-input']    ${TELCO}
+    Input Text    //Input[@placeholder='Titulo del articulo']    ${TITULO}
+    Input Text    //Input[@placeholder='Texto de copyright']    ${COPYRIGHT}
+    Input Text    //Input[@type='file']    ${FILEPATH}
+    sleep    5
+    Click Element    ${BOTONGUARDAR}
+    Wait until Element is Visible    //div[contains(.,'No se ha seleccionado el feature')]
+    Capture Page Screenshot    BO_33_CorazonSano_Crear Accion_Solo Idioma${CORRIDA}.jpg
+
+BO - 35: Corazon Sano - Acciones - Crear - Crear Acción
+    [Tags]    BO - 35
+    Wait Until Element is Visible    ${HOME}
+    Click element    ${HOME}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Wait Until Element is Visible    ${BOTONCREAR}
+    Click Element    ${BOTONCREAR}
+    Click Element    //a[contains(.,'Español Argentino')]
+    Select From List    //Select[@id='feature']    ${FEATURE}
+    Select From List    //Select[@class='form-control telcos-input']    ${TELCO}
+    Input Text    //Input[@placeholder='Titulo del articulo']    ${TITULO}
+    Input Text    //Input[@placeholder='Texto de copyright']    ${COPYRIGHT}
+    Input Text    //Input[@type='file']    ${FILEPATH}
+    sleep    10
+    Wait Until Element is Visible    ${BOTONGUARDAR}
+    Click Element    ${BOTONGUARDAR}
+    Wait until Element is Visible    //div[contains(.,'El contenido se creo correctamente!')]
+    Capture Page Screenshot    BO_35_CorazonSano_Crear Accion${CORRIDA}.jpg
+
+BO - 36: Corazon Sano - Acciones - Guardar y Nuevo
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Wait Until Element is Visible    ${BUSQUEDAXTITULO}
+    Input Text    ${BUSQUEDAXTITULO}    Practice relaxation exercises
+    Select From List    ${BUSQUEDAXTELCO}    Digicel Jamaica
+    Select From List    ${BUSQUEDAXFEATURE}    Presión Arterial
+    Wait Until Element is Visible    ${ACCIONEDITAR}
+    Click Link    ${ACCIONEDITAR}
+    Wait Until Element is Visible    //button[contains(.,'Guardar y Nuevo')]
+    Input Text    //Input[@type='file']    C:\\Users\\Nahuel Melo\\Desktop\\MHealth\\Backoffice\\imagenessair para caminhar.jpg
+    Sleep    3
+    Click Element    //button[contains(.,'Guardar y Nuevo')]
+    Wait Until Element is Visible    //h1[contains(.,'Nueva Accion')]
+    Capture Page Screenshot    BO_36_CorazonSano_Editar Accion_Guardar y Nuevo${CORRIDA}.jpg
+
+BO - 37: Corazon Sano - Acciones - Editar Acción
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Wait Until Element is Visible    ${BUSQUEDAXTITULO}
+    Input Text    ${BUSQUEDAXTITULO}    Practice relaxation exercises
+    Select From List    ${BUSQUEDAXTELCO}    Digicel Jamaica
+    Select From List    ${BUSQUEDAXFEATURE}    Presión Arterial
+    Wait Until Element is Visible    ${ACCIONEDITAR}
+    Click Link    ${ACCIONEDITAR}
+    Wait Until Element is Visible    //button[contains(.,'Guardar y Nuevo')]
+    Input Text    //Input[@type='file']    C:\\Users\\Nahuel Melo\\Desktop\\MHealth\\Backoffice\\imagenessair para caminhar.jpg
+    Sleep    3
+    Click Element    //button[contains(.,'Guardar y Nuevo')]
+    Capture Page Screenshot    BO_37_CorazonSano_Editar Accion${CORRIDA}.jpg
+
+BO - 38: Corazon Sano - Acciones - Eliminar Acción
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Wait Until Element is Visible    ${BUSQUEDAXTITULO}
+    Wait Until Element is Visible    ${BUSQUEDAXTELCO}
+    Wait Until Element is Visible    ${BUSQUEDAXFEATURE}
+    Input Text    ${BUSQUEDAXTITULO}    TEST
+    Select From List    ${BUSQUEDAXTELCO}    ${TELCO}
+    Select From List    ${BUSQUEDAXFEATURE}    ${FEATURE}
+    Page Should Contain Element    //a[@class='delete-link']
+    Choose Ok On Next Confirmation
+    Click Link    //a[@class='delete-link']
+    Confirm Action
+    Capture Page Screenshot    BO_38_CorazonSano_Eliminar Accion${CORRIDA}.jpg
+
+BO - 39: Corazon Sano - Acciones - Editar Acción - Editar Seccion
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Wait Until Element is Visible    ${BUSQUEDAXTITULO}
+    Input Text    ${BUSQUEDAXTITULO}    caminhar
+    Select From List    ${BUSQUEDAXTELCO}    ${TELCO}
+    Select From List    ${BUSQUEDAXFEATURE}    ${FEATURE2}
+    Page Should Contain Element    ${BO39-EDITAR}
+    Click Link    ${BO39-EDITAR}
+    Wait Until Element is Visible    //a[@title='Editar']
+    Click Link    //a[@title='Editar']
+    Sleep    5
+    Capture Page Screenshot    BO_39_CorazonSano_Editar Accion_Editar Seccion${CORRIDA}.jpg
+    Click Element    //button[contains(.,'Aceptar')]
+    Sleep    5
+    Wait Until Element is visible    ${BOTONGUARDAR}
+    Click Element    ${BOTONGUARDAR}
+
+BO - 41 & 43: Corazon Sano - Acciones - Busqueda por Titulo - Mas de Uno
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Wait Until Element is Visible    ${BUSQUEDAXTITULO}
+    Input Text    ${BUSQUEDAXTITULO}    Actividad
+    Capture Page Screenshot    BO_41_CorazonSano_Busqueda por Titulo_Mas de Uno${CORRIDA}.jpg
+
+BO - 42: Corazon Sano - Acciones - Busqueda por Titulo - No existe
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Wait Until Element is Visible    ${BUSQUEDAXTITULO}
+    Input Text    ${BUSQUEDAXTITULO}    No existe
+    Click Element    //button[contains(.,'Buscar')]
+    Wait Until Element is Visible    //td[contains(.,'No hay contenidos')]
+    Capture Page Screenshot    BO_42_CorazonSano_Busqueda por Titulo_No existe${CORRIDA}.jpg
+
+BO - 44: Corazon Sano - Acciones - Busqueda por Telco/País - No hay acciones
+    [Tags]    BO - 44
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Select From List    //Select[@name='filters[languages]']    Ingles
+    Select From List    ${BUSQUEDAXFEATURE}    Presión Arterial
+    Select From List    ${BUSQUEDAXTELCO}    Telco Test
+    Click Element    //button[contains(.,'Buscar')]
+    Sleep    2
+    Wait Until Element is Visible    //td[contains(.,'No hay contenidos')]
+    Capture Page Screenshot    BO_44_CorazonSano_Busqueda por Telco_No hay acciones${CORRIDA}.jpg
+
+BO - 45: Corazon Sano - Acciones - Busqueda por Telco/País - Hay acciones
+    [Tags]    BO - 45
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Select From List    //Select[@name='filters[languages]']    Portugués
+    Select From List    ${BUSQUEDAXFEATURE}    Presión Arterial
+    Click Element    //button[contains(.,'Buscar')]
+    Sleep    2
+    Capture Page Screenshot    BO_44_CorazonSano_Busqueda por Telco_Hay acciones${CORRIDA}.jpg
+
+BO - 46: Corazon Sano - Acciones - Busqueda por Feature
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONACCIONES}
+    Click element    ${SECCIONACCIONES}
+    Select From List    ${BUSQUEDAXFEATURE}    Presión Arterial
+    Click Element    //button[contains(.,'Buscar')]
+    Sleep    2
+    Capture Page Screenshot    BO_46_CorazonSano_Busqueda por Feature${CORRIDA}.jpg
+
+BO - 30: Corazon Sano - Precio de Cigarrillo
+    Wait Until Element is Visible    ${CORAZONSANO}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SEECCIONPRECIO}
+    Click element    ${SEECCIONPRECIO}
+    Wait Until Element is Visible    ${BOTONCREAR}
+    Capture Page Screenshot    BO_30_Precio de Cigarrillo_PrecioCigarrillo${CORRIDA}.jpg
+
+BO - 47: Corazon Sano - Precio de Cigarrillo - Crear
+    Wait Until Element is Visible    ${CORAZONSANO}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SEECCIONPRECIO}
+    Click element    ${SEECCIONPRECIO}
+    Wait Until Element is Visible    ${BOTONCREAR}
+    Click element    ${BOTONCREAR}
+
+BO - 47.1: Corazon Sano - Precio de Cigarrillo - Crear - Validar Campos
+    Wait Until Element is Visible    ${CORAZONSANO}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SEECCIONPRECIO}
+    Click element    ${SEECCIONPRECIO}
+    Wait Until Element is Visible    ${BOTONCREAR}
+    Click element    ${BOTONCREAR}
+    Wait Until Element is Visible    //select[@id='country']
+    Wait Until Element is Visible    //input[@id='low-price']
+    Wait Until Element is Visible    //input[@id='high-price']
+    Wait Until Element is Visible    ${BOTONGUARDAR}
+    Wait Until Element is Visible    //button[contains(.,'Guardar y Nuevo')]
+    Wait Until Element is Visible    //a[contains(.,'Cancelar')]
+    Capture Page Screenshot    BO_47.1_Precio de Cigarrillo_Validar Precio Cigarrillo${CORRIDA}.jpg
+
+BO - 48: Corazon Sano - Precio de Cigarrillo - Crear Precio - Solo Pais
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SEECCIONPRECIO}
+    Click element    ${SEECCIONPRECIO}
+    Wait Until Element is Visible    //a[@title='Eliminar']
+    Click Element    ${BOTONCREAR}
+    Select From List    //select[@id='country']    ${COUNTRY}
+    Click Element    ${BOTONGUARDAR}
+    Sleep    2
+    Page Should Contain Element    //div[contains(.,'No se ingreso un valor para el atado de 20')]
+    Capture Page Screenshot    BO_48_Precio de Cigarrillo_Crear Precio_Solo País${CORRIDA}.jpg
+
+BO - 49: Corazon Sano - Precio de Cigarrillo - Crear Precio - Solo Atado de 10
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SEECCIONPRECIO}
+    Click element    ${SEECCIONPRECIO}
+    Wait Until Element is Visible    //a[@title='Eliminar']
+    Click Element    ${BOTONCREAR}
+    Input Text    //input[@id='low-price']    ${LOWPRICE}
+    Click Element    ${BOTONGUARDAR}
+    Sleep    5
+    Page Should Contain Element    //div[contains(.,'No se ha seleccionado el país')]
+    Capture Page Screenshot    BO_49_Precio de Cigarrillo_Crear Precio_Solo Atado de 10${CORRIDA}.jpg
+
+BO - 50: Corazon Sano - Precio de Cigarrillo - Crear Precio - Solo Atado de 20
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SEECCIONPRECIO}
+    Click element    ${SEECCIONPRECIO}
+    Wait Until Element is Visible    //a[@title='Eliminar']
+    Click Element    ${BOTONCREAR}
+    Comment    Select From List    //select[@id='country']    ${COUNTRY}
+    Comment    Input Text    //input[@id='low-price']    ${LOWPRICE}
+    Input Text    //input[@id='high-price']    ${HIGHPRICE}
+    Click Element    ${BOTONGUARDAR}
+    Sleep    3
+    Page Should Contain Element    //div[contains(.,'No se ha seleccionado el país')]
+    Capture Page Screenshot    BO_50_Precio de Cigarrillo_Crear Precio_Solo Atado de 20${CORRIDA}.jpg
+
+BO - 51: Corazon Sano - Precio de Cigarrillo - Crear Precio
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SEECCIONPRECIO}
+    Click element    ${SEECCIONPRECIO}
+    Wait Until Element is Visible    //a[@title='Eliminar']
+    Comment    Click Element    //a[@title='Eliminar']
+    Click Element    ${BOTONCREAR}
+    Select From List    //select[@id='country']    ${COUNTRY}
+    Input Text    //input[@id='low-price']    ${LOWPRICE}
+    Input Text    //input[@id='high-price']    ${HIGHPRICE}
+    Click Element    ${BOTONGUARDAR}
+    Sleep    3
+    Page Should Contain Element    ${SEECCIONPRECIO}
+    Capture Page Screenshot    BO_51_Precio de Cigarrillo_Crear Precio${CORRIDA}.jpg
+
+BO - 51.1: Corazon Sano - Precio de Cigarrillo - Cancelar Edicion
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SEECCIONPRECIO}
+    Click element    ${SEECCIONPRECIO}
+    Wait Until Element is Visible    //a[@href='/heart/cigar-price/1/update']
+    Click Element    //a[@href='/heart/cigar-price/1/update']
+    Wait Until Element is Visible    //select[@id='country']
+    Page Should Contain Element    //input[@id='low-price']
+    Page Should Contain Element    //input[@id='high-price']
+    Input Text    //input[@id='low-price']    20
+    Click Element    //a[contains(.,'Cancelar')]
+    Page Should Contain Element    //a[contains(.,'Precio cigarrillos')]
+    Capture Page Screenshot    BO_51.1_Precio de Cigarrillo_Precio_Cancelar Edicion${CORRIDA}.jpg
+
+BO - 53: Corazon Sano - Precio de Cigarrillo - Editar Precio
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SEECCIONPRECIO}
+    Click element    ${SEECCIONPRECIO}
+    Wait Until Element is Visible    //a[@href='/heart/cigar-price/1/update']
+    Click Element    //a[@href='/heart/cigar-price/1/update']
+    Wait Until Element is Visible    //select[@id='country']
+    Page Should Contain Element    //input[@id='low-price']
+    Page Should Contain Element    //input[@id='high-price']
+    Input Text    //input[@id='low-price']    20
+    Click Element    ${BOTONGUARDAR}
+    Page Should Contain Element    ${SEECCIONPRECIO}
+    Capture Page Screenshot    BO_53_Precio de Cigarrillo_Editar Precio${CORRIDA}.jpg
+
+BO - 31: Corazon Sano - Terminos y Condiciones
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    //a[contains(.,'Terminos y condiciones')]
+    Click element    ${SECCIONTERMINO}
+    Wait Until Element is Visible    //table[@class='table table-striped']
+    Page Should Contain Element    //table[contains(.,'Fecha')]
+    Page Should Contain Element    //table[contains(.,'Telco / Pais')]
+    Page Should Contain Element    //table[contains(.,'Precio')]
+    Page Should Contain Element    //table[contains(.,'Acciones')]
+    Capture Page Screenshot    BO_31_TerminosYCondiciones${CORRIDA}.jpg
+
+BO - 55: Corazon Sano - Terminos y Condiciones - Crear - Validar
+    Wait Until Element is Visible    ${CORAZONSANO}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    //a[contains(.,'Terminos y condiciones')]
+    Click element    ${SECCIONTERMINO}
+    Wait Until Element is Visible    ${BOTONCREAR}
+    Click Element    ${BOTONCREAR}
+    Wait Until Element is Visible    //Select[@name='telco']
+    Page Should Contain Element    //Input[@name='price']
+    Wait Until Element is Visible    //div[@id='mceu_14']
+    Capture Page Screenshot    BO_55_TerminosYCondiciones_Validar${CORRIDA}.jpg
+
+BO - 59: Corazon Sano - Terminos y Condiciones - Editar
+    Wait Until Element is Visible    ${CORAZONSANO}
+    Click element    ${CORAZONSANO}
+    Wait Until Element is Visible    ${SECCIONTERMINO}
+    Click element    ${SECCIONTERMINO}
+    Wait Until Element is Visible    //table[@class='table table-striped']
+    Page should Contain Element    //a[@href='/heart/terms/1/edit']
+    Click Link    //a[@href='/heart/terms/1/edit']
+    Wait Until Element is Visible    //label[contains(.,'Texto')]
+    Page Should Contain Element    ${BOTONGUARDAR}
+    Comment    Click Element    //a[contains(.,'Cancelar')]
+    Click Element    ${BOTONGUARDAR}
+    Capture Page Screenshot    BO_59_TerminosYCondiciones_Editar Precio${CORRIDA}.jpg
+
+BO - 999: Backoffice - Fin Test
+    Close Browser

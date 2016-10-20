@@ -1,0 +1,30 @@
+*** Variables ***
+${URL}            http://qa-back.vrainz.com/
+${BROWSER}        Chrome
+${SOYMAMA}        //a[contains(.,' Soy Mamá ')]
+${CORAZONSANO}    //a[contains(.,' Mi Corazón Sano ')]
+${COUNTRY}        Brasil
+${LOWPRICE}       2.5
+${HIGHPRICE}      4
+${TELCO}          Vivo Brasil
+${TITULO}         TEST
+${FEATURE}        Alimentación
+${COPYRIGHT}      TEST COPYRIGHT
+${FILEPATH}       E:\\Sistemas\\MHealth\\Backoffice\\imagenes\\Nutrition Facts - English text.jpg
+${CORRIDA}        -290920161514
+#${ACCIONEDITAR}    //a[@href='/heart/action/263/edit']
+${ACCIONEDITAR}    //a[@href='/heart/action/15/edit']
+${HOME}           //a[contains(.,' Home ')]
+${BO39-EDITAR}    //a[@href='/heart/action/39/edit']
+${FEATURE2}       Actividad Física
+${BUSQUEDAXTITULO}    //input[@placeholder='Buscar por titulo']
+${BUSQUEDAXTELCO}    //Select[@name='filters[telco]']
+${BUSQUEDAXFEATURE}    //Select[@name='filters[feature]']
+${NEWTELCO}       //a[@href='/telco/new']
+${NAMETELCO}      //input[@name='name']
+${BOTONGUARDAR}    //button[contains(.,'Guardar')]
+${SECCIONACCIONES}    //a[contains(.,'Acciones')]
+${SEECCIONPRECIO}    //a[contains(.,'Precio cigarrillos')]
+${SECCIONTERMINO}    //a[contains(.,'Terminos y condiciones')]
+${BOTONCREAR}     //a[contains(.,'Crear')]
+${SECCIONCONTENIDO}    //a[contains(.,'Contenido')]
